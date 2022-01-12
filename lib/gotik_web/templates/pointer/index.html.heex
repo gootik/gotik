@@ -1,0 +1,28 @@
+<h1>Listing Pointers</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Destination</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for pointer <- @pointers do %>
+    <tr>
+      <td><%= pointer.name %></td>
+      <td><%= pointer.destination %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.pointer_path(@conn, :show, pointer) %></span>
+        <span><%= link "Edit", to: Routes.pointer_path(@conn, :edit, pointer) %></span>
+        <span><%= link "Delete", to: Routes.pointer_path(@conn, :delete, pointer), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Pointer", to: Routes.pointer_path(@conn, :new) %></span>

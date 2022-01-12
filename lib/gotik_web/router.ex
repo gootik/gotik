@@ -17,7 +17,9 @@ defmodule GotikWeb.Router do
   scope "/", GotikWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    # get "/", PageController, :index
+    resources "/pointers", PointerController
+    get "/:pointer", PointerController, :direct
   end
 
   # Other scopes may use custom stacks.

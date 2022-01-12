@@ -1,0 +1,18 @@
+<h1>Show Pointer</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @pointer.name %>
+  </li>
+
+  <li>
+    <strong>Destination:</strong>
+    <%= @pointer.destination %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.pointer_path(@conn, :edit, @pointer) %></span> |
+<span><%= link "Back", to: Routes.pointer_path(@conn, :index) %></span>

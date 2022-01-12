@@ -1,0 +1,5 @@
+<h1>Edit Pointer</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.pointer_path(@conn, :update, @pointer)) %>
+
+<span><%= link "Back", to: Routes.pointer_path(@conn, :index) %></span>
