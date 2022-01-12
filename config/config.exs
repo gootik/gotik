@@ -10,6 +10,19 @@ import Config
 config :gotik,
   ecto_repos: [Gotik.Repo]
 
+
+config :tailwind,
+  version: "3.0.10",
+  default: [
+    args: ~w(
+      --config=tailwind.config.js
+      --input=css/app.css
+      --output=../priv/static/assets/app.css
+    ),
+    cd: Path.expand("../assets", __DIR__)
+  ]
+
+
 # Configures the endpoint
 config :gotik, GotikWeb.Endpoint,
   url: [host: "localhost"],

@@ -1,5 +1,13 @@
-<h1>New Pointer</h1>
-
-<%= render "form.html", Map.put(assigns, :action, Routes.pointer_path(@conn, :create)) %>
-
-<span><%= link "Back", to: Routes.pointer_path(@conn, :index) %></span>
+<div class="w-4/5 mx-auto">
+  <div class="flex mb-8 gap-2">
+    <%= link to: Routes.pointer_path(@conn, :index), class: "py-0.5" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-neutral-600 hover:text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z" />
+      </svg>
+    <% end %>
+    <h2 class="text-lg font-semibold pb-2 flex-1">New Pointer</h2>
+  </div>
+  <div>
+    <%= render "form.html", Map.put(assigns, :action, Routes.pointer_path(@conn, :create)) %>
+  </div>
+</div>

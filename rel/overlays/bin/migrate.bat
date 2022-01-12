@@ -1,0 +1,1 @@
+call "%~dp0\gotik" eval Gotik.Release.migrate
