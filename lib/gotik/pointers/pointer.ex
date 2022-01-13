@@ -1,7 +1,7 @@
 defmodule Gotik.Pointers.Pointer do
   use Ecto.Schema
   import Ecto.Changeset
-  import EctoCommons.URLValidator
+  # import EctoCommons.URLValidator
 
   schema "pointers" do
     field :destination, :string
@@ -15,6 +15,5 @@ defmodule Gotik.Pointers.Pointer do
     pointer
     |> cast(attrs, [:name, :destination])
     |> validate_required([:name, :destination])
-    |> validate_url(:destination)
   end
 end
