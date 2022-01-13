@@ -4,6 +4,10 @@ defmodule GotikWeb.PointerController do
   alias Gotik.Pointers
   alias Gotik.Pointers.Pointer
 
+  import GotikWeb.UserAuth
+
+  plug :require_authenticated_user when action in [:new, :create, :edit, :update, :delete]
+
   def index(conn, _params) do
     pointers = Pointers.list_pointers()
     render(conn, "index.html", pointers: pointers)
@@ -15,6 +19,9 @@ defmodule GotikWeb.PointerController do
   end
 
   def create(conn, %{"pointer" => pointer_params}) do
+    user = conn.assigns.current_user
+    pointer_params = Map.put(pointer_params, "user_id", user.id)
+
     case Pointers.create_pointer(pointer_params) do
       {:ok, pointer} ->
         conn
@@ -33,31 +40,54 @@ defmodule GotikWeb.PointerController do
 
   def edit(conn, %{"id" => id}) do
     pointer = Pointers.get_pointer!(id)
-    changeset = Pointers.change_pointer(pointer)
-    render(conn, "edit.html", pointer: pointer, changeset: changeset)
+    user = conn.assigns.current_user
+
+    if pointer.user_id != user.id do
+      conn
+      |> put_flash(:info, "You cannot change other user's pointer")
+      |> redirect(to: Routes.pointer_path(conn, :index))
+    else
+      changeset = Pointers.change_pointer(pointer)
+      render(conn, "edit.html", pointer: pointer, changeset: changeset)
+    end
   end
 
   def update(conn, %{"id" => id, "pointer" => pointer_params}) do
     pointer = Pointers.get_pointer!(id)
+    user = conn.assigns.current_user
 
-    case Pointers.update_pointer(pointer, pointer_params) do
-      {:ok, pointer} ->
-        conn
-        |> put_flash(:info, "Pointer updated successfully.")
-        |> redirect(to: Routes.pointer_path(conn, :show, pointer))
+    if pointer.user_id != user.id do
+      conn
+      |> put_flash(:info, "You cannot change other user's pointer")
+      |> redirect(to: Routes.pointer_path(conn, :index))
+    else
+      case Pointers.update_pointer(pointer, pointer_params) do
+        {:ok, pointer} ->
+          conn
+          |> put_flash(:info, "Pointer updated successfully.")
+          |> redirect(to: Routes.pointer_path(conn, :show, pointer))
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", pointer: pointer, changeset: changeset)
+        {:error, %Ecto.Changeset{} = changeset} ->
+          render(conn, "edit.html", pointer: pointer, changeset: changeset)
+      end
     end
   end
 
   def delete(conn, %{"id" => id}) do
     pointer = Pointers.get_pointer!(id)
-    {:ok, _pointer} = Pointers.delete_pointer(pointer)
+    user = conn.assigns.current_user
 
-    conn
-    |> put_flash(:info, "Pointer deleted successfully.")
-    |> redirect(to: Routes.pointer_path(conn, :index))
+    if pointer.user_id != user.id do
+      conn
+      |> put_flash(:info, "You cannot change other user's pointer")
+      |> redirect(to: Routes.pointer_path(conn, :index))
+    else
+      {:ok, _pointer} = Pointers.delete_pointer(pointer)
+
+      conn
+      |> put_flash(:info, "Pointer deleted successfully.")
+      |> redirect(to: Routes.pointer_path(conn, :index))
+    end
   end
 
   def direct(conn, %{"pointer" => pointer_name}) do

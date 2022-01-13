@@ -18,7 +18,9 @@ defmodule Gotik.Pointers do
 
   """
   def list_pointers do
-    Repo.all(Pointer)
+    Pointer
+    |> Repo.all()
+    |> Repo.preload(:user)
   end
 
   @doc """
