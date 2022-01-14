@@ -26,7 +26,7 @@ defmodule GotikWeb.PointerController do
       {:ok, pointer} ->
         conn
         |> put_flash(:info, "Pointer created successfully.")
-        |> redirect(to: Routes.pointer_path(conn, :show, pointer))
+        |> redirect(to: Routes.pointer_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)

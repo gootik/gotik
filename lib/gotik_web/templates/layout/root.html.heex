@@ -11,14 +11,14 @@
   </head>
   <body class="w-full bg-neutral-900 text-neutral-400">
     <header class="py-4 mb-6 bg-neutral-800">
-      <div class="w-4/5 mx-auto">
-        <h1 class="text-xl font-semibold text-white">
-          Gootik.xyz go links!
+      <div class="w-4/5 mx-auto flex flex-row justify-center items-center">
+        <h1 class="text-xl font-semibold text-white grow">
+          <a href="/">Gootik.xyz go pointers!</a>
         </h1>
+        <nav class="mr-8">
+          <%= render "_user_menu.html", assigns %>
+        </nav>
       </div>
-      <nav>
-        <%= render "_user_menu.html", assigns %>
-      </nav>
     </header>
     <div class="container mx-auto">
       <div class="w-4/5 mx-auto">
