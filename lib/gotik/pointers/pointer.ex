@@ -17,5 +17,6 @@ defmodule Gotik.Pointers.Pointer do
     pointer
     |> cast(attrs, [:name, :destination, :user_id])
     |> validate_required([:name, :destination, :user_id])
+    |> unique_constraint(:name)
   end
 end
