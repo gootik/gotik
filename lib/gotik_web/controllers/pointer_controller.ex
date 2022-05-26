@@ -90,15 +90,18 @@ defmodule GotikWeb.PointerController do
     end
   end
 
-  def direct(conn, %{"pointer" => pointer_name}) do
+  def direct(conn, %{"pointer" => pointer_name, "rest" => rest}) do
     case Gotik.Pointers.get_pointer_by_name(pointer_name) do
       nil ->
         conn
         |> put_flash(:error, pointer_name <> " not found")
         |> redirect(to: Routes.pointer_path(conn, :index))
       pointer ->
+        rest_string = Enum.join(rest, "/")
+        final_dest = pointer.destination <> "/" <> rest_string
+
         conn
-        |> redirect(external: pointer.destination)
+        |> redirect(external: final_dest)
     end
   end
 end

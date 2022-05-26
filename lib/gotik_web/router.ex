@@ -17,15 +17,6 @@ defmodule GotikWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", GotikWeb do
-    pipe_through :browser
-
-    resources "/pointers", PointerController
-
-    get "/", PointerController, :index
-    get "/:pointer", PointerController, :direct
-  end
-
   # Other scopes may use custom stacks.
   # scope "/api", GotikWeb do
   #   pipe_through :api
@@ -91,5 +82,14 @@ defmodule GotikWeb.Router do
     post "/users/confirm", UserConfirmationController, :create
     get "/users/confirm/:token", UserConfirmationController, :edit
     post "/users/confirm/:token", UserConfirmationController, :update
+  end
+
+  scope "/", GotikWeb do
+    pipe_through :browser
+
+    resources "/pointers", PointerController
+
+    get "/", PointerController, :index
+    get "/:pointer/*rest", PointerController, :direct
   end
 end
