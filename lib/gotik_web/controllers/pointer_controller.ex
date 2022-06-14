@@ -98,7 +98,12 @@ defmodule GotikWeb.PointerController do
         |> redirect(to: Routes.pointer_path(conn, :index))
       pointer ->
         rest_string = Enum.join(rest, "/")
-        final_dest = pointer.destination <> "/" <> rest_string
+        final_dest =
+          if String.length(rest_string) > 0 do
+            pointer.destination <> "/" <> rest_string
+          else
+            pointer.destination
+          end
 
         conn
         |> redirect(external: final_dest)
