@@ -1,66 +1,57 @@
-<div class="w-4/5 mx-auto">
-  <div class="flex mb-8">
-    <h2 class="text-lg font-semibold pb-2 flex-1">All Pointers</h2>
-    <%= if @current_user do %>
-      <%= link to: Routes.pointer_path(@conn, :new) do %>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
+<div class="px-4 sm:px-6 lg:px-8">
+  <div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+      <h1 class="text-xl font-semibold text-white-900">All Pointers</h1>
+    </div>
+    <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+      <%= if @current_user do %>
+        <%= link to: Routes.pointer_path(@conn, :new) do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        <% end %>
       <% end %>
-    <% end %>
-  </div>
-
-<div class="mt-4 mb-8 w-full">
-  <div class="relative">
-    <input type="text" class="h-12 w-full pr-8 pl-5 text-neutral-400 placeholder-neutral-700 rounded-full z-0 bg-neutral-800  border-neutral-700 focus:border-neutral-700 focus:shadow-none focus:outline-none" placeholder="Search anything...">
-    <div class="absolute top-3 right-5 text-neutral-700">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-      </svg>
     </div>
   </div>
-</div>
-
-  <%= for pointer <- @pointers do %>
-    <div class="bg-neutral-300 rounded-md p-6 text-neutral-800 mb-6 shadow-md">
-      <div class="flex flex-row w-full">
-        <div class="flex flex-col flex-1">
-          <div class="flex flex-row flex-1 justify-between mb-4 pl-3 gap-2">
-            <div class="font-bold">go/<%= pointer.name %></div>
-            <div class="">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </div>
-            <div class="flex-grow hover:text-red-600">
-              <%= link(pointer.destination, to: URI.parse(pointer.destination)) %>
-            </div>
-          </div>
-          <div class="text-sm ml-3 text-neutral-400">
-            <%= pointer.user.email %>
-          </div>
-        </div>
-        <div class="flex flex-col gap-2">
-          <%= if @current_user do %>
-            <%= if @current_user.id == pointer.user.id do %>
-              <div>
-                <%= link to: Routes.pointer_path(@conn, :edit, pointer) do %>
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-neutral-500 hover:text-neutral-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                  </svg>
+  <div class="-mx-4 mt-8 overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-lg">
+    <table class="min-w-full divide-y divide-gray-300">
+      <thead class="bg-gray-50">
+        <tr>
+          <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Name</th>
+          <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">Destination</th>
+          <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell">Email</th>
+          <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+            <span class="sr-only">Actions</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 bg-white">
+        <%= for pointer <- @pointers do %>
+          <tr>
+            <td class="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-6">
+              go/<%= pointer.name %>
+            </td>
+            <td class="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell"><%= link(pointer.destination, to: URI.parse(pointer.destination), class: "underline hover:text-blue-500") %></td>
+            <td class="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell"><%= pointer.user.email %></td>
+            <td class="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+              <%= if @current_user do %>
+                <%= if @current_user.id == pointer.user.id do %>
+                  <%= link to: Routes.pointer_path(@conn, :edit, pointer) do %>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-neutral-500 hover:text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                    </svg>
+                  <% end %>
+                  <%= link to: Routes.pointer_path(@conn, :delete, pointer), method: :delete, data: [confirm: "Are you sure?"] do %>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-neutral-500 hover:text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                    </svg>
+                  <% end %>
                 <% end %>
-              </div>
-              <div>
-                <%= link to: Routes.pointer_path(@conn, :delete, pointer), method: :delete, data: [confirm: "Are you sure?"] do %>
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-neutral-500 hover:text-neutral-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-                  </svg>
-                <% end %>
-              </div>
-            <% end %>
-          <% end %>
-        </div>
-      </div>
-    </div>
-  <% end %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>
